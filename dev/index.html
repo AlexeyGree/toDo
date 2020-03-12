@@ -12,19 +12,19 @@
     <h1 class="header__headline">ToDo</h1>
   </header>
   <main class="content">
-    <form class="add-task add-task-js">
+    <form class="add-task add-task">
       <p class="add-task__paragraph">
         <label class="add-task__label" for="task-name-field">Enter task name</label>
-        <input class="add-task__text-field" name="task-name" id="task-name-field">
+        <input class="add-task__text-field add-task__text-field-name" type="text" name="task-name" id="task-name-field">
       </p>
       <p class="add-task__paragraph">
         <label class="add-task__label" for="task-desc-field">Enter task description</label>
-        <textarea class="add-task__text-field" name="task-desc" id="task-desc-field"></textarea>
+        <textarea class="add-task__text-field add-task__text-field-desc" name="task-desc" id="task-desc-field"></textarea>
       </p>
-      <button class="btn add-task__create">Add task</button>
+      <button class="btn add-task__create add-task__create">Add task</button>
     </form>
     <div class="tasks">
-      <section class="tasks__section actual-tasks">
+      <section class="tasks__section actual-tasks actual-tasks">
         <h2 class="tasks__headline actual-tasks__headline">Actual tasks</h2>
         <article class="task task--actual">
           <div class="task__info-box">

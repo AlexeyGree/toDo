@@ -178,9 +178,14 @@ html {
   padding-right: 30px;
   padding-bottom: 0;
   padding-left: 30px;
+  margin-bottom: 15px;
   width: 100%;
   min-height: 130px;
-  background-color: rgb(255, 214, 197);
+  border-radius: 3px;
+  /* background-color: rgb(255, 214, 197); */
+}
+.task:last-child {
+  margin-bottom: 0;
 }
 .task--actual {
   background-color: salmon;
@@ -208,13 +213,18 @@ html {
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
+  word-break: break-word;
   color: rgba(255, 255, 255, 1);
 }
 .task__desc--completed {
   color: rgba(169, 169, 169, 1);
 }
 .task__edit-box {
+  /* display: none; */
   width: 100%;
+}
+.task__edit-box--active {
+  display: block;
 }
 .task__controls-box {
   display: flex;

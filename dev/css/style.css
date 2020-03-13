@@ -131,15 +131,30 @@ html {
   margin-top: 10px;
   width: 100%;
 }
-.add-task__create--edit-box {
+.add-task__buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+.add-task__create--edit-box,
+.add-task__cancel {
+  margin-top: 10px;
+  margin-bottom: 5px;
   background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 1);
 }
+.add-task__cancel:hover,
+.add-task__cancel:focus,
 .add-task__create--edit-box:hover,
 .add-task__create--edit-box:focus {
   background-color: rgba(255, 255, 255, 1);
   border: 1px solid transparent;
   color: rgba(169, 169, 169, 1);
+}
+.add-task__cancel {
+  width: 100%;
 }
 /*================ add task ================*/
 /*================ tasks ================*/
@@ -170,6 +185,7 @@ html {
 }
 .complete-tasks {}
 .task {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -220,11 +236,18 @@ html {
   color: rgba(169, 169, 169, 1);
 }
 .task__edit-box {
-  /* display: none; */
+  display: none;
   width: 100%;
+  /* width: 0px;
+  height: 0px;
+  z-index: -5;
+  position: absolute;
+  opacity: 0;
+  visibility: hidden; */
 }
 .task__edit-box--active {
   display: block;
+  /* width: 100%; */
 }
 .task__controls-box {
   display: flex;
@@ -354,5 +377,14 @@ html {
     padding-bottom: 20px;
     margin-top: 40px;
     width: 50%;
+  }
+  .add-task__buttons {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .add-task__cancel,
+  .add-task__create--edit-box {
+    width: 48%;
   }
 }

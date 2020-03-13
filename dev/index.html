@@ -31,17 +31,20 @@
             <h3 class="task__name">Name of task</h3>
             <p class="task__desc">Description of task</p>
           </div>
-          <div class="task__edit-box">
+          <div class="task__edit-box task__edit-box--active">
             <form class="add-task add-task--edit-box">
               <p class="add-task__paragraph">
                 <label class="add-task__label add-task__label--edit-box" for="task-name-field-inner">Enter task name</label>
-                <input class="add-task__text-field add-task__text-field--edit-box" name="task-name" id="task-name-field-inner" placeholder="Enter name">
+                <input class="add-task__text-field add-task__text-field--edit-box add-task__text-field-name--edit-box" name="task-name" id="task-name-field-inner" placeholder="Enter name">
               </p>
               <p class="add-task__paragraph">
                 <label class="add-task__label add-task__label--edit-box" for="task-desc-field-inner">Enter task description</label>
-                <textarea class="add-task__text-field add-task__text-field--edit-box" name="task-desc" id="task-desc-field-inner" placeholder="Enter description"></textarea>
+                <textarea class="add-task__text-field add-task__text-field--edit-box add-task__text-field-desc--edit-box" name="task-desc" id="task-desc-field-inner" placeholder="Enter description"></textarea>
               </p>
-              <button class="btn add-task__create add-task__create--edit-box">Add task</button>
+              <div class="add-task__buttons">
+                <button class="btn add-task__create add-task__create--edit-box">Add task</button>
+                <button class="btn add-task__cancel">Cancel</button>
+              </div>
             </form>
           </div>
           <div class="task__controls-box">

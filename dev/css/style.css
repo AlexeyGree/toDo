@@ -181,8 +181,8 @@ html {
   align-items: center;
   width: 100%;
 }
-.actual-tasks {}
-.actual-tasks__box {}
+/* .actual-tasks {}
+.actual-tasks__box {} */
 .tasks__headline {
   margin: 0;
   margin-bottom: 20px;
@@ -191,8 +191,8 @@ html {
   line-height: 25px;
   color: rgba(169, 169, 169, 1);
 }
-.complete-tasks {}
-.completed-tasks__box {}
+/* .complete-tasks {}
+.completed-tasks__box {} */
 .task {
   position: relative;
   display: flex;

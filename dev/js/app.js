@@ -2,13 +2,101 @@
 
 var counter1 = 0;
 var counter2 = 1;
+
+/* move/delete tasks */
+var moveOrDeleteTasks = function(action) {
+  var actualTasks = document.querySelectorAll('.task--actual');
+  var completedTasks = document.querySelectorAll('.task--completed');
+
+  if (action === 'done') {
+    for (var i = 0; i < actualTasks.length; i++) {
+      var taskKey = actualTasks[i].querySelector('.task__name').getAttribute('data-storage-key');
+      localStorage.removeItem(taskKey);
+      createEventsForCompleteTask(actualTasks[i]);
+    }
+  } else if (action === 'delete') {
+    for (var i = 0; i < completedTasks.length; i++) {
+      var taskKey = completedTasks[i].querySelector('.task__name').getAttribute('data-storage-key');
+      localStorage.removeItem(taskKey);
+      completedTasks[i].remove();
+    }
+  }
+}
+
+var removeAll = document.querySelector('.tasks__remove-completed');
+var completeAll = document.querySelector('.tasks__remove-actual');
+
+removeAll.addEventListener('click', function(evt) {
+  evt.preventDefault();
+  moveOrDeleteTasks('delete');
+});
+
+completeAll.addEventListener('click', function(evt) {
+  evt.preventDefault();
+  moveOrDeleteTasks('done');
+})
+
+/* move/delete tasks */
+
+/* creating events of completed task */
+var createEventsForCompleteTask = function(task) {
+  var actualTasksBox = document.querySelector('.actual-tasks__box');
+  var completedTask = task;
+  var completedTasksBox = document.querySelector('.completed-tasks__box');
+  var name = completedTask.querySelector('.task__name');
+  var desc = completedTask.querySelector('.task__desc');
+  var completed = completedTask.querySelector('.task__btn--complete');
+  var edit = completedTask.querySelector('.task__btn--edit');
+  var remove = completedTask.querySelector('.task__btn--remove');
+
+  name.classList.add('task__name--completed');
+  if (name.getAttribute('data-storage-key').slice(0, 7) === 'actual_') {
+    name.setAttribute('data-storage-key', 'completed_' + name.getAttribute('data-storage-key').slice(7));
+  } else {
+    name.setAttribute('data-storage-key', 'completed_' + name.getAttribute('data-storage-key').slice(10));
+  }
+
+  desc.classList.add('task__desc--completed');
+  if (desc.getAttribute('data-storage-value').slice(0, 7) === 'actual_') {
+    desc.setAttribute('data-storage-value', 'completed_' + desc.getAttribute('data-storage-value').slice(7));
+  } else {
+    desc.setAttribute('data-storage-value', 'completed_' + desc.getAttribute('data-storage-value').slice(10));
+  }
+
+
+  localStorage.setItem(name.getAttribute('data-storage-key'), desc.getAttribute('data-storage-value'));
+
+  completedTask.classList.remove('task--actual');
+  completedTask.classList.add('task--completed');
+  completed.classList.add('task__btn--complete-active');
+
+  edit.classList.add('task__btn--edit-disabled');
+  edit.classList.add('task__btn--disabled');
+  edit.disabled = true;
+
+  remove.classList.add('task__btn--remove-disabled');
+  completedTasksBox.appendChild(completedTask);
+
+  completed.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    actualTasksBox.appendChild(task);
+    localStorage.removeItem(name.getAttribute('data-storage-key'));
+    createEvents(task);
+  });
+
+  remove.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    localStorage.removeItem(name.getAttribute('data-storage-key'));
+    completedTask.remove();
+  });
+};
+/* creating events of completed task */
 /* creating events of task */
 var createEvents = function(taskStructure) {
   var counter = 0;
   var task = taskStructure;
   var name = taskStructure.querySelector('.task__name');
   var desc = taskStructure.querySelector('.task__desc');
-  var storageKey = localStorage.setItem(name.textContent, desc.textContent);
   var editName = taskStructure.querySelector('.add-task__text-field-name--edit-box');
   var editDesc = taskStructure.querySelector('.add-task__text-field-desc--edit-box');
   var editBtn = taskStructure.querySelector('.add-task__create--edit-box');
@@ -16,13 +104,43 @@ var createEvents = function(taskStructure) {
   var taskEditBox = taskStructure.querySelector('.task__edit-box');
   var edit = taskStructure.querySelector('.task__btn--edit');
   var remove = taskStructure.querySelector('.task__btn--remove');
+  var complete = taskStructure.querySelector('.task__btn--complete');
+  var completeAll = document.querySelector('.tasks__remove-actual');
+
+  localStorage.setItem(name.getAttribute('data-storage-key'), desc.getAttribute('data-storage-value'));
+
+  if (task.classList.contains('task--completed')) {
+    localStorage.removeItem(name.getAttribute('data-storage-key'));
+    task.classList.remove('task--completed');
+    task.classList.add('task--actual');
+
+    name.classList.remove('task__name--completed');
+    if (name.getAttribute('data-storage-key').slice(0, 10) === 'completed_') {
+      name.setAttribute('data-storage-key', 'actual_' + name.getAttribute('data-storage-key').slice(10));
+    }
+
+    desc.classList.remove('task__desc--completed');
+    if (desc.getAttribute('data-storage-value').slice(0, 10) === 'completed_') {
+      desc.setAttribute('data-storage-value', 'actual_' + desc.getAttribute('data-storage-value').slice(10));
+    }
+
+    complete.classList.remove('task__btn--complete-active');
+    edit.disabled = false;
+    edit.classList.remove('task__btn--disabled');
+    edit.classList.remove('task__btn--edit-disabled');
+    remove.classList.remove('task__btn--remove-disabled');
+    localStorage.setItem(name.getAttribute('data-storage-key'), desc.getAttribute('data-storage-value'));
+  }
 
   editBtn.addEventListener('click', function(evt) {
     evt.preventDefault();
-    storageKey = localStorage.removeItem(name.textContent);
+    localStorage.removeItem(name.getAttribute('data-storage-key'));
     name.textContent = editName.value;
+    name.setAttribute('data-storage-key', 'actual_' + editName.value);
     desc.textContent = editDesc.value;
-    storageKey = localStorage.setItem(editName.value, editDesc.value);
+    desc.setAttribute('data-storage-value', 'actual_' + editDesc.value);
+    localStorage.setItem(name.getAttribute('data-storage-key'), desc.getAttribute('data-storage-value'));
+
     taskEditBox.classList.remove('task__edit-box--active');
     counter ++;
   });
@@ -48,61 +166,33 @@ var createEvents = function(taskStructure) {
   remove.addEventListener('click', function(evt) {
     evt.preventDefault();
     task.remove();
-    storageKey = localStorage.removeItem(name.textContent);
+    localStorage.removeItem(name.getAttribute('data-storage-key'));
   });
-}
+
+  complete.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    localStorage.removeItem(name.getAttribute('data-storage-key'));
+    createEventsForCompleteTask(task);//, storageKey
+  });
+};
 /* creating events of task */
 /* task object */
 var task = {
-  create: function(name, desc) {
+  create: function(name, desc, mask) {
     this.name = name;
     this.desc = desc;
-    this.taskStructure = taskStructure.getTask(name, desc);
-    this.delete = function() {
+    this.taskHtml = taskStructure.getTask(name, desc, mask);
 
-    };
-    this.events = createEvents(this.taskStructure);
-    // this.localStore = localStorage.setItem(this.name, this.desc);
-    // var counter = 0;
-    // var h3 = this.taskStructure.querySelector('.task__name');
-    // var p = this.taskStructure.querySelector('.task__desc');
-
-    // var editForm = this.taskStructure.querySelector('.add-task--edit-box');
-    // var editName = this.taskStructure.querySelector('.add-task__text-field-name--edit-box');
-
-    // var editDesc = this.taskStructure.querySelector('.add-task__text-field-desc--edit-box');
-
-    // var editBtn = this.taskStructure.querySelector('.add-task__create--edit-box');
-    // editBtn.addEventListener('click', function(evt) {
-    //   evt.preventDefault();
-    //   h3.textContent = editName.value;
-    //   p.textContent = editDesc.value;
-    //   // this.localStore = localStorage.setItem(task.editName.value, task.editDesc.value);
-    //   taskEditBox.classList.remove('task__edit-box--active');
-    //   counter ++;
-    // });
-    // var editCancelBtn = this.taskStructure.querySelector('.add-task__cancel');
-    // editCancelBtn.addEventListener('click', function(evt) {
-    //   evt.preventDefault();
-    //   taskEditBox.classList.remove('task__edit-box--active');
-    //   counter ++;
-    // });
-
-    // var taskEditBox = this.taskStructure.querySelector('.task__edit-box');
-    // var edit = this.taskStructure.querySelector('.task__btn--edit');
-    // edit.addEventListener('click', function(evt) {
-    //   evt.preventDefault();
-    //   if (counter % 2 === 0) {
-    //     editName.value = h3.textContent;
-    //     editDesc.value = p.textContent;
-    //     taskEditBox.classList.add('task__edit-box--active');
-    //   } else {
-    //     taskEditBox.classList.remove('task__edit-box--active');
-    //   }
-    //   counter ++;
-    // })
+    if (mask === 'actual_') {
+      this.events = createEvents(this.taskHtml);
+    } else if (mask === 'completed_') {
+      this.events = createEventsForCompleteTask(this.taskHtml)
+    }
+  },
+  add: function(place, taskStructure) {
+    return place.appendChild(taskStructure);
   }
-}
+};
 /* task object */
 /* create task structure */
 var taskStructure = {
@@ -184,29 +274,38 @@ var taskStructure = {
 
     return parentBox.appendChild(taskEditBox);
   },
-  getInfoBox: function(parentBox, name, desc) {
+  getDataAttr: function(taskName, taskDesc, mask) {
+    taskName.setAttribute('data-storage-key', mask + taskName.textContent);
+    taskDesc.setAttribute('data-storage-value', mask + taskDesc.textContent);
+  },
+  getInfoBox: function(parentBox, name, desc, mask) {
     var taskInfoBox = this.getElementWithClass('div', 'task__info-box');
     var taskName = this.getElementWithClass('h3', 'task__name');
     var taskDesc = this.getElementWithClass('p', 'task__desc');
 
     taskName.textContent = name;
-
     taskDesc.textContent = desc;
+    this.getDataAttr(taskName, taskDesc, mask)
+
     taskInfoBox.appendChild(taskName);
     taskInfoBox.appendChild(taskDesc);
 
     return parentBox.appendChild(taskInfoBox);
   },
-  getTask: function(name, desc) {
-    var actualTasks = document.querySelector('.actual-tasks');
-    var taskBox = this.getElementWithClass('article', 'task', 'task--actual');
+  getTask: function(name, desc, mask) {
+    var taskBox = this.getElementWithClass('article', 'task');
+    if (mask === 'actual_') {
+      taskBox.classList.add('task--actual')
+    } else if (mask === 'completed') {
+      taskBox.classList.add('task--completed');
+    }
 
-    this.getInfoBox(taskBox, name, desc);
+    this.getInfoBox(taskBox, name, desc, mask);
     this.getEditBox(taskBox);
     this.getControlBox(taskBox);
 
-    return actualTasks.appendChild(taskBox);
-  }
+    return taskBox;
+  },
 };
 /* create task structure */
 /* form object */
@@ -225,28 +324,41 @@ var form = {
     return currentDesc;
     
   }
-}
+};
 /* form object */
 /* restore task from localStorage */
 var restoreTaskAfterRefresh = function() {
   var localStorageLength = localStorage.length;
+  var maskActual = 'actual_';
+  var maskCompleted = 'completed_'
   if (localStorageLength > 0) {
     for (var i = 0; i < localStorageLength; i++) {
-      var name = localStorage.key(i);
-      var desc = localStorage.getItem(name);
-      task.create(name, desc);
-      counter1 += 2;
-      counter2 += 2;
+      if (localStorage.key(i).slice(0, 7) === maskActual) {
+        var name = localStorage.key(i).slice(7);
+        var desc = localStorage.getItem(localStorage.key(i)).slice(7);
+        task.create(name, desc, maskActual);
+        task.add(document.querySelector('.actual-tasks__box'), task.taskHtml);
+        counter1 += 2;
+        counter2 += 2;
+      } else if (localStorage.key(i).slice(0, 10) === maskCompleted) {
+        var name = localStorage.key(i).slice(10);
+        var desc = localStorage.getItem(localStorage.key(i)).slice(10);
+        task.create(name, desc, maskCompleted);
+        task.add(document.querySelector('.completed-tasks__box'), task.taskHtml);
+        counter1 += 2;
+        counter2 += 2;
+      }
     }
   }
-}
+};
 restoreTaskAfterRefresh();
 /* restore task from localStorage */
 /* add new task */
 form.addTaskBtn.addEventListener('click', function(evt) {
   evt.preventDefault();
-  if (form.getName() !== '' || form.getDesc() !== '') {
-    task.create(form.getName(), form.getDesc());
+  if (form.getName() !== '' && form.getDesc() !== '') {
+    task.create(form.getName(), form.getDesc(), 'actual_');
+    task.add(document.querySelector('.actual-tasks__box'), task.taskHtml);
     counter1 += 2;
     counter2 += 2;
     form.name = document.querySelector('.add-task__text-field-name').value = '';

@@ -174,7 +174,15 @@ html {
   padding-top: 20px;
   padding-bottom: 20px;
 }
+.tasks__section-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
 .actual-tasks {}
+.actual-tasks__box {}
 .tasks__headline {
   margin: 0;
   margin-bottom: 20px;
@@ -184,6 +192,7 @@ html {
   color: rgba(169, 169, 169, 1);
 }
 .complete-tasks {}
+.completed-tasks__box {}
 .task {
   position: relative;
   display: flex;

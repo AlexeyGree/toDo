@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <meta http-equiv="Content-Security-Policy" content="default-src"> -->
   <title>ToDoApp</title>
   <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
@@ -24,50 +23,17 @@
       <button class="btn add-task__create add-task__create">Add task</button>
     </form>
     <div class="tasks">
-      <section class="tasks__section actual-tasks actual-tasks">
+      <section class="tasks__section actual-tasks">
         <h2 class="tasks__headline actual-tasks__headline">Actual tasks</h2>
-        <article class="task task--actual">
-          <div class="task__info-box">
-            <h3 class="task__name">Name of task</h3>
-            <p class="task__desc">Description of task</p>
-          </div>
-          <div class="task__edit-box task__edit-box--active">
-            <form class="add-task add-task--edit-box">
-              <p class="add-task__paragraph">
-                <label class="add-task__label add-task__label--edit-box" for="task-name-field-inner">Enter task name</label>
-                <input class="add-task__text-field add-task__text-field--edit-box add-task__text-field-name--edit-box" name="task-name" id="task-name-field-inner" placeholder="Enter name">
-              </p>
-              <p class="add-task__paragraph">
-                <label class="add-task__label add-task__label--edit-box" for="task-desc-field-inner">Enter task description</label>
-                <textarea class="add-task__text-field add-task__text-field--edit-box add-task__text-field-desc--edit-box" name="task-desc" id="task-desc-field-inner" placeholder="Enter description"></textarea>
-              </p>
-              <div class="add-task__buttons">
-                <button class="btn add-task__create add-task__create--edit-box">Add task</button>
-                <button class="btn add-task__cancel">Cancel</button>
-              </div>
-            </form>
-          </div>
-          <div class="task__controls-box">
-            <button class="task__btn task__btn--edit" area-label="edit task"></button>
-            <button class="task__btn task__btn--remove" area-label="remove task"></button>
-            <button class="task__btn task__btn--complete" area-label='complete task'></button>
-          </div>
-        </article>
+        <div class="tasks__section-box actual-tasks__box">
+        </div>
+        <button class="btn tasks__remove tasks__remove-actual">Clear the list of completed tasks</button>
       </section>
       <section class="tasks__section completed-tasks">
         <h2 class="tasks__headline completed-tasks__headline">Complete tasks</h2>
-        <article class="task task--completed">
-          <div class="task__info-box">
-            <h3 class="task__name task__name--completed">Name of task</h3>
-            <p class="task__desc task__desc--completed">Description of task</p>
-          </div>
-          <div class="task__controls-box">
-            <button class="task__btn task__btn--edit task__btn--edit-disabled task__btn--disabled" area-label="edit task" disabled></button>
-            <button class="task__btn task__btn--remove task__btn--remove-disabled " area-label="remove task"></button>
-            <button class="task__btn task__btn--complete task__btn--complete-active" area-label='complete task'></button>
-          </div>
-        </article>
-        <button class="btn tasks__remove">Clear the list of completed tasks</button>
+        <div class="tasks__section-box completed-tasks__box">
+        </div>
+        <button class="btn tasks__remove tasks__remove-completed">Clear the list of completed tasks</button>
       </section>
     </div>
   </main>

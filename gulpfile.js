@@ -22,7 +22,7 @@ gulp.task('css', function () {
 });
 
 gulp.task('js', function() {
-  return gulp.src('dev/js/app.js')
+  return gulp.src('dev/js/**/*.js')
     .pipe(server.stream())
 });
 
@@ -37,7 +37,7 @@ gulp.task('server', function () {
 
   gulp.watch('dev/css/style.css', gulp.series('css'));
   gulp.watch('dev/index.html', gulp.series('html'));
-  gulp.watch('dev/js/app.js', gulp.series('js'));
+  gulp.watch('dev/js/**/*.js', gulp.series('js'));
   gulp.watch('dev/index.html').on('change', server.reload);
 });
 

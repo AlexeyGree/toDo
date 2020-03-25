@@ -11,7 +11,7 @@
     <h1 class="header__headline">ToDo</h1>
   </header>
   <main class="content">
-    <form class="add-task add-task">
+    <form class="add-task" id="js-add-task">
       <p class="add-task__paragraph">
         <label class="add-task__label" for="task-name-field">Enter task name</label>
         <input class="add-task__text-field add-task__text-field-name" type="text" name="task-name" id="task-name-field">
@@ -20,18 +20,18 @@
         <label class="add-task__label" for="task-desc-field">Enter task description</label>
         <textarea class="add-task__text-field add-task__text-field-desc" name="task-desc" id="task-desc-field"></textarea>
       </p>
-      <button class="btn add-task__create add-task__create">Add task</button>
+      <button class="btn add-task__create add-task__create" id="js-add-task__create">Add task</button>
     </form>
     <div class="tasks">
       <section class="tasks__section actual-tasks">
         <h2 class="tasks__headline actual-tasks__headline">Actual tasks</h2>
-        <div class="tasks__section-box actual-tasks__box">
+        <div class="tasks__section-box actual-tasks__box" id="js-actual-box">
         </div>
         <button class="btn tasks__remove tasks__remove-actual">Clear the list of completed tasks</button>
       </section>
       <section class="tasks__section completed-tasks">
         <h2 class="tasks__headline completed-tasks__headline">Complete tasks</h2>
-        <div class="tasks__section-box completed-tasks__box">
+        <div class="tasks__section-box completed-tasks__box" id="js-completed-box">
         </div>
         <button class="btn tasks__remove tasks__remove-completed">Clear the list of completed tasks</button>
       </section>
@@ -40,6 +40,9 @@
   <footer class="footer">
     <p class="footer__copyright">copyright©2020</p>
   </footer>
-  <script src="js/app.js"></script>
+  <!-- <script type="module" src="js/taskHtmlStructure.js"></script> -->
+  <!-- <script type="module" src="js/restore.js"></script> -->
+  <script type="module" src="js/module/task.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
